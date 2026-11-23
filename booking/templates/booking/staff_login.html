@@ -1,0 +1,14 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block content %}
+<section class="frame page narrow">
+  <header class="page-heading"><h1>{{ t.staff_login }}</h1></header>
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  <form method="post" class="panel stack">
+    {% csrf_token %}
+    <label>{{ t.username }}<input name="username" autocomplete="username" required></label>
+    <label>{{ t.password }}<input name="password" type="password" autocomplete="current-password" required></label>
+    <button class="button primary">{{ t.login }}</button>
+  </form>
+</section>
+{% endblock %}

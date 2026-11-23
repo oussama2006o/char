@@ -1,0 +1,23 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block content %}
+<section class="frame page">
+  {% include 'booking/barber_nav.html' %}
+  <header class="page-heading"><h1>{{ t.services }}</h1></header>
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  <div class="shop-grid">
+    {% for kind, item in services %}
+      <section class="panel">
+        <h2>{{ t|tr:kind }}</h2>
+        <form method="post" class="stack">
+          {% csrf_token %}<input type="hidden" name="kind" value="{{ kind }}">
+          <label>{{ t.price }} (DA)<input required name="price" type="number" min="1" value="{{ item.price|default_if_none:'' }}"></label>
+          <label>{{ t.duration }} ({{ t.minutes }})<input required name="duration" type="number" min="1" max="720" value="{{ item.duration|default_if_none:'' }}"></label>
+          <label class="check"><input type="checkbox" name="active"{% if not item or item.active %} checked{% endif %}>{{ t.active }}</label>
+          <button class="button primary">{{ t.save }}</button>
+        </form>
+      </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,152 @@
+from django.utils import translation
+
+STRINGS = {
+    "brand": ("Le fauteuil", "الكرسي"),
+    "city": ("Isser, Boumerdès", "يسر، بومرداس"),
+    "home": ("Accueil", "الرئيسية"),
+    "browse": ("Les salons", "محلات الحلاقة"),
+    "find": ("Trouver un créneau", "ابحث عن موعد"),
+    "mine": ("Mes rendez-vous", "حجوزاتي"),
+    "barber_space": ("Espace barbier", "فضاء الحلاق"),
+    "admin_space": ("Administration", "الإدارة"),
+    "hero_title": ("Réservez chez votre barbier.", "احجز موعدك عند الحلاق."),
+    "hero_body": ("Comparez les tarifs des barbiers d’Isser et choisissez l’heure qui vous convient.", "قارن أسعار حلاقي يسر واختر الوقت الذي يناسبك."),
+    "directory_title": ("Les salons d’Isser", "محلات الحلاقة في يسر"),
+    "directory_body": ("Découvrez les salons, leurs barbiers et leurs tarifs.", "تعرّف على المحلات والحلاقين وأسعار الخدمات."),
+    "empty_shops": ("Aucun salon disponible pour le moment.", "لا توجد محلات متاحة حالياً."),
+    "all_shops": ("Voir tous les salons", "عرض كل المحلات"),
+    "team": ("Les barbiers", "الحلاقون"),
+    "empty_staff": ("Aucun barbier disponible dans ce salon pour le moment.", "لا يوجد حلاقون متاحون في هذا المحل حالياً."),
+    "empty_services": ("Aucun service proposé pour le moment.", "لا توجد خدمات متاحة حالياً."),
+    "share": ("Partager le salon", "شارك المحل"),
+    "shop_link": ("Lien du salon", "رابط المحل"),
+    "shop_qr": ("Code QR du salon", "رمز QR للمحل"),
+    "how": ("Comment réserver", "كيف تحجز"),
+    "how_one": ("Choisissez une coupe", "اختر الخدمة"),
+    "how_two": ("Trouvez votre créneau", "اختر الوقت"),
+    "how_three": ("Payez au salon", "ادفع في المحل"),
+    "how_one_body": ("Comparez les services et les tarifs des barbiers d’Isser.", "قارن خدمات وأسعار حلاقي يسر."),
+    "how_two_body": ("Recevez votre confirmation dès la réservation.", "يُؤكد موعدك فور الحجز."),
+    "how_three_body": ("Réglez votre coupe après la prestation.", "ادفع ثمن الحلاقة بعد الخدمة."),
+    "service": ("Service", "الخدمة"),
+    "hair": ("Coupe de cheveux", "قصّ الشعر"),
+    "beard": ("Taille de barbe", "حلاقة اللحية"),
+    "combo": ("Coupe et barbe", "قصّ الشعر مع اللحية"),
+    "date": ("Date", "التاريخ"),
+    "time": ("Heure", "الوقت"),
+    "barber": ("Barbier", "الحلاق"),
+    "shop": ("Salon", "المحل"),
+    "duration": ("Durée", "المدة"),
+    "price": ("Prix", "السعر"),
+    "search": ("Afficher les créneaux", "عرض الأوقات المتاحة"),
+    "select_time": ("Choisir un créneau", "اختر وقتاً"),
+    "no_slots": ("Aucun créneau disponible. Essayez une autre date ou un autre service.", "لا توجد أوقات متاحة. جرّب تاريخاً أو خدمة أخرى."),
+    "bad_selection": ("Choisissez un service et une date dans les sept prochains jours.", "اختر خدمة وتاريخاً خلال الأيام السبعة المقبلة."),
+    "slot_gone": ("Ce créneau n’est plus disponible. Choisissez une autre heure.", "هذا الوقت لم يعد متاحاً. اختر وقتاً آخر."),
+    "cannot_change": ("Cette action n’est plus disponible pour ce rendez-vous.", "هذا الإجراء لم يعد متاحاً لهذا الموعد."),
+    "confirm_title": ("Confirmer le rendez-vous", "تأكيد الموعد"),
+    "pay_shop": ("Paiement au salon après la prestation.", "الدفع في المحل بعد الخدمة."),
+    "late": ("5 minutes de retard maximum.", "مهلة التأخر 5 دقائق."),
+    "verify_phone": ("Vérifiez votre téléphone", "أكّد رقم هاتفك"),
+    "name": ("Votre nom", "اسمك"),
+    "phone": ("Numéro de téléphone", "رقم الهاتف"),
+    "phone_hint": ("Exemple +213 555 123 456", "مثال ‎+213 555 123 456"),
+    "send_code": ("Envoyer le code SMS", "إرسال كود SMS"),
+    "code": ("Code SMS", "كود SMS"),
+    "check_code": ("Vérifier le code", "تأكيد الكود"),
+    "change_phone": ("Changer de numéro", "تغيير الرقم"),
+    "code_sent": ("Saisissez le code reçu par SMS.", "أدخل الكود الذي وصلك في رسالة SMS."),
+    "invalid_phone": ("Vérifiez le nom et le numéro de téléphone.", "تحقّق من الاسم ورقم الهاتف."),
+    "invalid_code": ("Code incorrect ou expiré. Vérifiez-le ou demandez un nouveau code.", "الكود خاطئ أو منتهي الصلاحية. تحقّق منه أو اطلب كوداً جديداً."),
+    "slow_down": ("Trop de tentatives. Réessayez plus tard.", "محاولات كثيرة. أعد المحاولة لاحقاً."),
+    "sms_error": ("Le service SMS est indisponible. Réessayez dans un instant.", "خدمة الرسائل غير متاحة. أعد المحاولة بعد قليل."),
+    "whatsapp_reminder": ("Recevoir un rappel WhatsApp une heure avant", "أريد تذكيراً على واتساب قبل الموعد بساعة"),
+    "whatsapp_cancellation": ("Recevoir les avis d’annulation du barbier sur WhatsApp", "أريد إشعاراً على واتساب إذا ألغى الحلاق الموعد"),
+    "booked": ("Votre rendez-vous est confirmé.", "موعدك مؤكد."),
+    "booking_details": ("Détails du rendez-vous", "تفاصيل الموعد"),
+    "confirmed": ("Confirmé", "مؤكد"),
+    "attended": ("Présent", "حضر"),
+    "no_show": ("Absent", "ما حضرش"),
+    "customer_canceled": ("Annulé par le client", "ألغاه الزبون"),
+    "barber_canceled": ("Annulé par le barbier", "ألغاه الحلاق"),
+    "empty_appointments": ("Vous n’avez aucun rendez-vous.", "ليس لديك أي مواعيد."),
+    "sign_in_customer": ("Connectez-vous pour voir vos rendez-vous.", "أكّد رقم هاتفك للاطلاع على حجوزاتك."),
+    "customer_login": ("Connexion avec votre téléphone", "الدخول برقم الهاتف"),
+    "logout": ("Se déconnecter", "تسجيل الخروج"),
+    "cancel": ("Annuler le rendez-vous", "إلغاء الموعد"),
+    "canceled": ("Rendez-vous annulé.", "أُلغي الموعد."),
+    "move": ("Changer l’heure", "تغيير الوقت"),
+    "save_time": ("Confirmer la nouvelle heure", "تأكيد الوقت الجديد"),
+    "moved": ("L’heure du rendez-vous a été modifiée.", "تم تغيير وقت الموعد."),
+    "back": ("Retour", "رجوع"),
+    "staff_login": ("Connexion du personnel", "دخول الحلاق والإدارة"),
+    "username": ("Identifiant", "اسم المستخدم"),
+    "password": ("Mot de passe", "كلمة المرور"),
+    "login": ("Se connecter", "دخول"),
+    "invalid_staff": ("Vérifiez vos identifiants et l’activation du compte.", "تحقّق من بيانات الدخول وتفعيل الحساب."),
+    "schedule": ("Disponibilités", "أوقات التوفر"),
+    "services": ("Services et tarifs", "الخدمات والأسعار"),
+    "today": ("Rendez-vous du jour", "مواعيد اليوم"),
+    "calendar": ("Rendez-vous", "المواعيد"),
+    "show": ("Afficher", "عرض"),
+    "shop_photos": ("Photos du salon", "صور المحل"),
+    "no_day_appointments": ("Aucun rendez-vous à cette date.", "لا توجد مواعيد في هذا التاريخ."),
+    "alerts": ("Annulations récentes", "الإلغاءات الأخيرة"),
+    "read": ("Marquer comme lu", "تحديد كمقروء"),
+    "affected": ("Rendez-vous hors disponibilités", "المواعيد خارج أوقات التوفر"),
+    "affected_help": ("Ces rendez-vous restent confirmés jusqu’à leur annulation.", "تبقى هذه المواعيد مؤكدة حتى يلغيها الحلاق."),
+    "client": ("Client", "الزبون"),
+    "mark_present": ("Marquer présent", "تسجيل الحضور"),
+    "mark_absent": ("Marquer absent", "تسجيل الغياب"),
+    "recorded": ("Le rendez-vous a été mis à jour.", "تم تحديث الموعد."),
+    "save": ("Enregistrer", "حفظ"),
+    "saved": ("Modifications enregistrées.", "تم حفظ التعديلات."),
+    "weekly": ("Horaires hebdomadaires", "الأوقات الأسبوعية"),
+    "exceptions": ("Exceptions par date", "تعديلات حسب التاريخ"),
+    "schedule_help": ("Saisissez des plages comme 09:00–12:00, 14:00–17:00. Laissez vide pour fermer les réservations.", "أدخل فترات مثل 09:00–12:00, 14:00–17:00. اترك الحقل فارغاً لإغلاق الحجز."),
+    "bad_hours": ("Vérifiez les heures. Les plages ne doivent pas se chevaucher.", "تحقّق من الأوقات. يجب ألا تتداخل الفترات."),
+    "remove_exception": ("Rétablir les horaires habituels", "استرجاع الأوقات المعتادة"),
+    "active": ("Proposer ce service", "إتاحة هذه الخدمة"),
+    "bad_service": ("Vérifiez le prix et la durée.", "تحقّق من السعر والمدة."),
+    "minutes": ("min", "د"),
+    "report": ("Suivi du mois pilote", "متابعة الشهر التجريبي"),
+    "pilot_start": ("Premier jour", "أول يوم"),
+    "pilot_end": ("Dernier jour", "آخر يوم"),
+    "total": ("Total", "المجموع"),
+    "bookings": ("Réservations", "الحجوزات"),
+    "cancelled_short": ("Annulés", "أُلغي"),
+    "goal": ("Objectif de 30 rendez-vous honorés", "الهدف 30 موعد حضور"),
+    "bad_range": ("Indiquez une période valide.", "أدخل فترة صالحة."),
+    "manage": ("Gérer les salons et les comptes", "إدارة المحلات والحسابات"),
+    "review_bookings": ("Consulter les réservations", "مراجعة الحجوزات"),
+}
+DAYS = [
+    ("Lundi", "الاثنين"), ("Mardi", "الثلاثاء"), ("Mercredi", "الأربعاء"),
+    ("Jeudi", "الخميس"), ("Vendredi", "الجمعة"), ("Samedi", "السبت"), ("Dimanche", "الأحد"),
+]
+
+
+def get_language(request):
+    return request.session.get("language", "fr")
+
+
+def phrase(request, key):
+    return STRINGS[key][get_language(request) == "ar"]
+
+
+def context(request):
+    is_arabic = get_language(request) == "ar"
+    return {
+        "lang": "ar" if is_arabic else "fr",
+        "direction": "rtl" if is_arabic else "ltr",
+        "t": {key: pair[is_arabic] for key, pair in STRINGS.items()},
+    }
+
+
+class LanguageMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        with translation.override(get_language(request)):
+            return self.get_response(request)

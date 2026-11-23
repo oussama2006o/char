@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ direction }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f4e9">
+  <title>{% block title %}{{ t.brand }} · {{ t.city }}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'booking/site.css' %}">
+</head>
+<body>
+<header class="topbar">
+  <div class="frame header-inner">
+    <a class="brand" href="{% url 'home' %}"><span class="brand-mark" aria-hidden="true"></span>{{ t.brand }}</a>
+    <nav class="main-nav" aria-label="{{ t.home }}">
+      <a href="{% url 'shops' %}"{% if request.resolver_match.url_name == 'shops' or request.resolver_match.url_name == 'shop' %} aria-current="page"{% endif %}>{{ t.browse }}</a>
+      <a href="{% url 'mine' %}"{% if request.resolver_match.url_name == 'mine' or request.resolver_match.url_name == 'appointment' %} aria-current="page"{% endif %}>{{ t.mine }}</a>
+    </nav>
+    <form action="{% url 'language' %}" method="post" class="language">
+      {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+      {% if lang == 'fr' %}
+        <button name="language" value="ar" lang="ar" dir="rtl" type="submit">العربية</button>
+      {% else %}
+        <button name="language" value="fr" lang="fr" dir="ltr" type="submit">Français</button>
+      {% endif %}
+    </form>
+  </div>
+</header>
+<main id="main">
+  {% if messages %}
+    <div class="frame notices">
+      {% for message in messages %}<p class="notice {{ message.tags }}" role="status">{{ message }}</p>{% endfor %}
+    </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer">
+  <div class="frame footer-inner">
+    <a class="brand" href="{% url 'home' %}"><span class="brand-mark" aria-hidden="true"></span>{{ t.brand }}</a>
+    <span>{{ t.city }}</span>
+    {% if user.is_staff %}<a href="{% url 'report' %}">{{ t.admin_space }}</a>
+    {% else %}<a href="{% url 'staff_login' %}">{{ t.barber_space }}</a>{% endif %}
+  </div>
+</footer>
+</body>
+</html>

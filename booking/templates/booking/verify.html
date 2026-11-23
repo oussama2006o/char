@@ -1,0 +1,53 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block title %}{% if item %}{{ t.confirm_title }}{% else %}{{ t.customer_login }}{% endif %} · {{ t.brand }}{% endblock %}
+{% block content %}
+<div class="frame page narrow">
+  {% if item %}<a class="back" href="{% url 'barber_search' item.barber_id %}?service={{ item.kind }}&amp;date={{ start|date:'Y-m-d' }}">{{ t.select_time }}</a>{% endif %}
+  <header class="page-heading">
+    <h1>{% if item %}{{ t.confirm_title }}{% else %}{{ t.customer_login }}{% endif %}</h1>
+  </header>
+  {% if item %}
+    <section class="panel summary">
+      <h2>{{ t|tr:item.kind }}</h2>
+      <dl class="facts">
+        <dt>{{ t.shop }}</dt><dd>{% if lang == 'ar' %}{{ item.barber.shop|localized:'name' }}{% else %}{{ item.barber.shop.name }}{% endif %}</dd>
+        <dt>{{ t.barber }}</dt><dd>{% if lang == 'ar' %}{{ item.barber|localized:'name' }}{% else %}{{ item.barber.name }}{% endif %}</dd>
+        <dt>{{ t.date }}</dt><dd><bdi>{{ start|date:'d/m/Y · H:i' }}</bdi></dd>
+        <dt>{{ t.duration }}</dt><dd>{{ item.duration }} {{ t.minutes }}</dd>
+        <dt>{{ t.price }}</dt><dd><bdi>{{ item.price }} DA</bdi></dd>
+      </dl>
+      <p>{{ t.pay_shop }} {{ t.late }}</p>
+    </section>
+  {% endif %}
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  <section class="panel">
+    {% if customer %}
+      <form method="post" class="stack">
+        {% csrf_token %}
+        <label class="check"><input type="checkbox" name="reminder"> {{ t.whatsapp_reminder }}</label>
+        <label class="check"><input type="checkbox" name="cancellation"> {{ t.whatsapp_cancellation }}</label>
+        <button class="button primary" name="action" value="confirm">{{ t.confirm_title }}</button>
+      </form>
+    {% else %}
+      {% if item %}<h2>{{ t.verify_phone }}</h2>{% endif %}
+      {% if challenge %}
+        <p>{{ t.code_sent }} <bdi>{{ challenge.phone }}</bdi></p>
+        <form method="post" class="stack">
+          {% csrf_token %}
+          <label>{{ t.code }}<input name="code" dir="ltr" inputmode="numeric" autocomplete="one-time-code" required maxlength="10"></label>
+          <button class="button primary" name="action" value="check">{{ t.check_code }}</button>
+          <button class="plain text-link" name="action" value="reset" formnovalidate>{{ t.change_phone }}</button>
+        </form>
+      {% else %}
+        <form method="post" class="stack">
+          {% csrf_token %}
+          <label>{{ t.name }}<input name="name" autocomplete="name" required maxlength="100"></label>
+          <label>{{ t.phone }}<input type="tel" name="phone" dir="ltr" autocomplete="tel" required placeholder="{{ t.phone_hint }}" maxlength="32"></label>
+          <button class="button primary" name="action" value="send">{{ t.send_code }}</button>
+        </form>
+      {% endif %}
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

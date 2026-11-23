@@ -1,0 +1,8 @@
+{% extends 'booking/base.html' %}
+{% block title %}{{ t.directory_title }} · {{ t.brand }}{% endblock %}
+{% block content %}
+<section class="frame page">
+  <header class="page-heading"><h1>{{ t.directory_title }}</h1><p>{{ t.directory_body }}</p></header>
+  {% include 'booking/shop_cards.html' %}
+</section>
+{% endblock %}

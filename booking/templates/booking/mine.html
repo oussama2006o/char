@@ -1,0 +1,19 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block title %}{{ t.mine }} · {{ t.brand }}{% endblock %}
+{% block content %}
+<section class="frame page narrow">
+  <header class="page-heading"><h1>{{ t.mine }}</h1></header>
+  {% if customer %}
+    {% for item in items %}
+      <a class="panel list-item" href="{% url 'appointment' item.pk %}">
+        <div><h2>{{ t|tr:item.kind }}</h2><p>{% if lang == 'ar' %}{{ item.shop|localized:'name' }}{% else %}{{ item.shop.name }}{% endif %} · <bdi>{{ item.start|date:'d/m/Y H:i' }}</bdi></p></div>
+        <span class="status {{ item.status }}">{{ t|tr:item.status }}</span>
+      </a>
+    {% empty %}<p class="empty">{{ t.empty_appointments }}</p>{% endfor %}
+    <form method="post" action="{% url 'customer_logout' %}" class="logout">{% csrf_token %}<button class="button secondary">{{ t.logout }}</button></form>
+  {% else %}
+    <div class="panel"><p>{{ t.sign_in_customer }}</p><a class="button primary" href="{% url 'customer_login' %}{% if login_next %}?next={{ login_next|urlencode }}{% endif %}">{{ t.customer_login }}</a></div>
+  {% endif %}
+</section>
+{% endblock %}

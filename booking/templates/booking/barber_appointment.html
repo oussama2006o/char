@@ -1,0 +1,26 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block content %}
+<div class="frame page narrow">
+  {% include 'booking/barber_nav.html' %}
+  <header class="page-heading"><h1>{{ t.booking_details }}</h1></header>
+  <section class="panel summary">
+    <div class="section-heading"><h2>{{ t|tr:item.kind }}</h2><span class="status {{ item.status }}">{{ t|tr:item.status }}</span></div>
+    <dl class="facts">
+      <dt>{{ t.client }}</dt><dd>{{ item.customer.name }}</dd>
+      <dt>{{ t.phone }}</dt><dd><bdi>{{ item.customer.phone }}</bdi></dd>
+      <dt>{{ t.date }}</dt><dd><bdi>{{ item.start|date:'d/m/Y · H:i' }}</bdi></dd>
+      <dt>{{ t.duration }}</dt><dd>{{ item.duration }} {{ t.minutes }}</dd>
+      <dt>{{ t.price }}</dt><dd><bdi>{{ item.price }} DA</bdi></dd>
+    </dl>
+    {% if item.status == 'confirmed' %}
+      <form method="post" class="actions">
+        {% csrf_token %}
+        {% if can_attend %}<button class="button primary" name="action" value="attended">{{ t.mark_present }}</button>{% endif %}
+        {% if can_no_show %}<button class="button secondary" name="action" value="no_show">{{ t.mark_absent }}</button>{% endif %}
+        <button class="button danger" name="action" value="cancel">{{ t.cancel }}</button>
+      </form>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

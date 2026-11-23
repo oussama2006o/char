@@ -1,0 +1,6 @@
+<nav class="staff-nav" aria-label="{{ t.barber_space }}">
+  <a href="{% url 'barber_today' %}">{{ t.today }}</a>
+  <a href="{% url 'barber_schedule' %}">{{ t.schedule }}</a>
+  <a href="{% url 'barber_services' %}">{{ t.services }}</a>
+  <form action="{% url 'staff_logout' %}" method="post">{% csrf_token %}<button class="plain text-link">{{ t.logout }}</button></form>
+</nav>

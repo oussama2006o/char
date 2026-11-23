@@ -1,0 +1,44 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block title %}{% if lang == 'ar' %}{{ shop|localized:'name' }}{% else %}{{ shop.name }}{% endif %} · {{ t.brand }}{% endblock %}
+{% block content %}
+<div class="frame page">
+  <a class="back" href="{% url 'shops' %}">{{ t.browse }}</a>
+  <header class="page-heading">
+    <h1>{% if lang == 'ar' %}{{ shop|localized:'name' }}{% else %}{{ shop.name }}{% endif %}</h1>
+    <p>{% if lang == 'ar' %}{{ shop|localized:'neighborhood' }} · {{ shop|localized:'address' }}{% else %}{{ shop.neighborhood }} · {{ shop.address }}{% endif %}</p>
+  </header>
+  {% if shop.image_url %}<img class="shop-banner" src="{{ shop.image_url }}" alt="">{% endif %}
+  <div class="columns">
+    <section>
+      <h2>{{ t.team }}</h2>
+      {% for barber in barbers %}
+        <article class="panel">
+          <h3>{% if lang == 'ar' %}{{ barber|localized:'name' }}{% else %}{{ barber.name }}{% endif %}</h3>
+          {% for item in barber.services.all %}
+            <a class="service-row" href="{% url 'barber_search' barber.pk %}?service={{ item.kind }}">
+              <span><strong>{{ t|tr:item.kind }}</strong><small>{{ item.duration }} {{ t.minutes }}</small></span>
+              <span><bdi>{{ item.price }} DA</bdi> <span class="arrow" aria-hidden="true">↗</span></span>
+            </a>
+          {% empty %}<p>{{ t.empty_services }}</p>{% endfor %}
+        </article>
+      {% empty %}<p class="empty">{{ t.empty_staff }}</p>{% endfor %}
+    </section>
+    <aside class="panel share">
+      <h2>{{ t.share }}</h2>
+      <a href="{% url 'shop_qr' shop.slug %}" download="{{ shop.slug }}-qr.svg"><img src="{% url 'shop_qr' shop.slug %}" width="144" height="144" alt="{{ t.shop_qr }}"></a>
+      <a class="text-link" href="{{ share_url }}">{{ t.shop_link }}</a>
+    </aside>
+  </div>
+  {% with photos=shop.photos.all %}
+    {% if photos %}
+      <section class="section">
+        <h2>{{ t.shop_photos }}</h2>
+        <div class="shop-grid shop-gallery">
+          {% for photo in photos %}<img src="{{ photo.image_url }}" alt="{{ t.shop_photos }}" loading="lazy">{% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  {% endwith %}
+</div>
+{% endblock %}

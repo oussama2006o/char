@@ -1,0 +1,10 @@
+{% if affected %}
+<section class="panel">
+  <h2>{{ t.affected }}</h2><p>{{ t.affected_help }}</p>
+  {% for item in affected %}
+    <a class="service-row" href="{% url 'barber_appointment' item.pk %}">
+      <strong>{{ item.customer.name }}</strong><bdi>{{ item.start|date:'d/m/Y H:i' }}</bdi>
+    </a>
+  {% endfor %}
+</section>
+{% endif %}

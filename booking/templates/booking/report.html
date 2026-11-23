@@ -1,0 +1,29 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block content %}
+<section class="frame page">
+  <nav class="staff-nav" aria-label="{{ t.admin_space }}">
+    <a href="{% url 'admin:index' %}">{{ t.manage }}</a>
+    {% if perms.booking.view_appointment %}<a href="{% url 'admin:booking_appointment_changelist' %}">{{ t.review_bookings }}</a>{% endif %}
+    <form action="{% url 'staff_logout' %}" method="post">{% csrf_token %}<button class="plain text-link">{{ t.logout }}</button></form>
+  </nav>
+  <header class="page-heading"><h1>{{ t.report }}</h1><p>{{ t.goal }}</p></header>
+  <form method="get" class="panel filter-form">
+    <label>{{ t.pilot_start }}<input type="date" name="from" value="{{ first|date:'Y-m-d' }}" required></label>
+    <label>{{ t.pilot_end }}<input type="date" name="to" value="{{ last|date:'Y-m-d' }}" required></label>
+    <button class="button primary">{{ t.show }}</button>
+  </form>
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">{{ t.shop }}</th><th scope="col">{{ t.bookings }}</th><th scope="col">{{ t.confirmed }}</th><th scope="col">{{ t.attended }}</th><th scope="col">{{ t.no_show }}</th><th scope="col">{{ t.cancelled_short }}</th></tr></thead>
+      <tbody>
+        {% for row in shops %}
+          <tr><th scope="row">{% if lang == 'ar' %}{{ row|localized:'name' }}{% else %}{{ row.name }}{% endif %}</th><td>{{ row.booked }}</td><td>{{ row.confirmed }}</td><td>{{ row.attended }}</td><td>{{ row.no_show }}</td><td>{{ row.canceled }}</td></tr>
+        {% endfor %}
+      </tbody>
+      <tfoot><tr><th scope="row">{{ t.total }}</th><td>{{ totals.booked }}</td><td>{{ totals.confirmed }}</td><td>{{ totals.attended }}</td><td>{{ totals.no_show }}</td><td>{{ totals.canceled }}</td></tr></tfoot>
+    </table>
+  </div>
+</section>
+{% endblock %}

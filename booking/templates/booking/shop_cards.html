@@ -1,0 +1,19 @@
+{% load booking_ui %}
+<div class="shop-grid">
+  {% for shop in shops %}
+    <article class="shop-card">
+      <a href="{% url 'shop' shop.slug %}">
+        {% if shop.image_url %}<div class="shop-image"><img src="{{ shop.image_url }}" alt="" loading="lazy"></div>{% endif %}
+        <div class="shop-card-body">
+          <div>
+            <h3>{% if lang == 'ar' %}{{ shop|localized:'name' }}{% else %}{{ shop.name }}{% endif %}</h3>
+            <p>{% if lang == 'ar' %}{{ shop|localized:'neighborhood' }}{% else %}{{ shop.neighborhood }}{% endif %}</p>
+          </div>
+          <span class="shop-arrow arrow" aria-hidden="true">↗</span>
+        </div>
+      </a>
+    </article>
+  {% empty %}
+    <p class="empty">{{ t.empty_shops }}</p>
+  {% endfor %}
+</div>

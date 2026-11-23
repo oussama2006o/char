@@ -1,0 +1,38 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block content %}
+<div class="frame page">
+  {% include 'booking/barber_nav.html' %}
+  <header class="page-heading"><h1>{{ t.schedule }}</h1><p>{{ t.schedule_help }}</p></header>
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  {% include 'booking/affected.html' %}
+  <div class="columns balanced">
+    <section class="panel">
+      <h2>{{ t.weekly }}</h2>
+      <form class="stack" method="post">
+        {% csrf_token %}
+        {% for index, name, value in week %}
+          <label>{{ name }}<input dir="ltr" name="day{{ index }}" value="{{ value }}" placeholder="09:00–12:00, 14:00–17:00"></label>
+        {% endfor %}
+        <button class="button primary" name="action" value="week">{{ t.save }}</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>{{ t.exceptions }}</h2>
+      <form class="stack" method="post">
+        {% csrf_token %}
+        <label>{{ t.date }}<input name="date" type="date" required value="{{ request.POST.date }}"></label>
+        <label>{{ t.schedule }}<input dir="ltr" name="windows" value="{{ request.POST.windows }}" placeholder="09:00–12:00"></label>
+        <button class="button primary" name="action" value="override">{{ t.save }}</button>
+      </form>
+      {% for item, hours in exceptions %}
+        <form class="service-row" method="post">
+          {% csrf_token %}<input type="hidden" name="date" value="{{ item.date|date:'Y-m-d' }}">
+          <span><strong>{{ item.date|date:'d/m/Y' }}</strong>{% if hours %}<small><bdi>{{ hours }}</bdi></small>{% endif %}</span>
+          <button class="plain text-link" name="action" value="restore">{{ t.remove_exception }}</button>
+        </form>
+      {% endfor %}
+    </section>
+  </div>
+</div>
+{% endblock %}

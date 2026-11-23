@@ -1,0 +1,49 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block title %}{{ t.booking_details }} · {{ t.brand }}{% endblock %}
+{% block content %}
+<div class="frame page narrow">
+  <a class="back" href="{% url 'mine' %}">{{ t.mine }}</a>
+  <header class="page-heading"><h1>{{ t.booking_details }}</h1></header>
+  <section class="panel summary">
+    <div class="section-heading"><h2>{{ t|tr:item.kind }}</h2><span class="status {{ item.status }}">{{ t|tr:item.status }}</span></div>
+    <dl class="facts">
+      <dt>{{ t.shop }}</dt><dd>{% if lang == 'ar' %}{{ item.shop|localized:'name' }}{% else %}{{ item.shop.name }}{% endif %}</dd>
+      <dt>{{ t.barber }}</dt><dd>{% if lang == 'ar' %}{{ item.barber|localized:'name' }}{% else %}{{ item.barber.name }}{% endif %}</dd>
+      <dt>{{ t.date }}</dt><dd><bdi>{{ item.start|date:'d/m/Y · H:i' }}</bdi></dd>
+      <dt>{{ t.duration }}</dt><dd>{{ item.duration }} {{ t.minutes }}</dd>
+      <dt>{{ t.price }}</dt><dd><bdi>{{ item.price }} DA</bdi></dd>
+    </dl>
+    <p>{{ t.pay_shop }} {{ t.late }}</p>
+  </section>
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  {% if editable %}
+    {% if moving %}
+      <section class="panel">
+        <h2>{{ t.move }}</h2>
+        <form method="get" class="filter-form compact">
+          <input type="hidden" name="move" value="1">
+          <label>{{ t.date }}<input type="date" name="date" min="{{ today|date:'Y-m-d' }}" max="{{ last_day|date:'Y-m-d' }}" value="{{ day|date:'Y-m-d' }}" required></label>
+          <button class="button secondary">{{ t.search }}</button>
+        </form>
+        {% if options %}
+          <form method="post" class="stack">
+            {% csrf_token %}
+            <label>{{ t.select_time }}
+              <select name="start" required><option value="">{{ t.select_time }}</option>
+                {% for start in options %}<option value="{{ start|date:'c' }}">{{ start|date:'H:i' }}</option>{% endfor %}
+              </select>
+            </label>
+            <button class="button primary" name="action" value="move">{{ t.save_time }}</button>
+          </form>
+        {% else %}<p class="empty">{{ t.no_slots }}</p>{% endif %}
+      </section>
+    {% else %}
+      <div class="actions">
+        <a class="button primary" href="?move=1">{{ t.move }}</a>
+        <form method="post">{% csrf_token %}<button class="button danger" name="action" value="cancel">{{ t.cancel }}</button></form>
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

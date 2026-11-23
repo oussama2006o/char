@@ -1,0 +1,11 @@
+<form method="get" class="panel filter-form"{% if search_action %} action="{{ search_action }}"{% endif %}>
+  <label>{{ t.service }}
+    <select name="service">
+      {% for value, label in choices %}<option value="{{ value }}"{% if kind == value %} selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>{{ t.date }}
+    <input name="date" type="date" required min="{{ today|date:'Y-m-d' }}" max="{{ last_day|date:'Y-m-d' }}" value="{{ day|date:'Y-m-d' }}">
+  </label>
+  <button type="submit" class="button primary">{{ t.search }}</button>
+</form>

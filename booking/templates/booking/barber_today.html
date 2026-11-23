@@ -1,0 +1,31 @@
+{% extends 'booking/base.html' %}
+{% load booking_ui %}
+{% block content %}
+<section class="frame page">
+  {% include 'booking/barber_nav.html' %}
+  <header class="page-heading"><h1>{% if day == today %}{{ t.today }}{% else %}{{ t.calendar }}{% endif %}</h1><p>{% if lang == 'ar' %}{{ barber|localized:'name' }}{% else %}{{ barber.name }}{% endif %}</p></header>
+  <form method="get" class="panel filter-form compact">
+    <label>{{ t.date }}<input name="date" type="date" value="{{ day|date:'Y-m-d' }}" required></label>
+    <button class="button primary">{{ t.show }}</button>
+  </form>
+  {% if error %}<p class="notice error" role="alert">{{ t|tr:error }}</p>{% endif %}
+  {% if notices %}
+    <section class="panel">
+      <h2>{{ t.alerts }}</h2>
+      {% for notice in notices %}
+        <div class="service-row">
+          <a href="{% url 'barber_appointment' notice.appointment_id %}">{{ notice.appointment.customer.name }} · <bdi>{{ notice.appointment.start|date:'d/m/Y H:i' }}</bdi></a>
+          <form action="{% url 'read_notice' notice.pk %}" method="post">{% csrf_token %}<button class="plain text-link">{{ t.read }}</button></form>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+  {% include 'booking/affected.html' %}
+  {% for item in items %}
+    <a class="panel list-item" href="{% url 'barber_appointment' item.pk %}">
+      <div><h2>{{ item.customer.name }}</h2><p><bdi>{{ item.start|date:'H:i' }}</bdi> · {{ t|tr:item.kind }}</p></div>
+      <span class="status {{ item.status }}">{{ t|tr:item.status }}</span>
+    </a>
+  {% empty %}<p class="empty">{{ t.no_day_appointments }}</p>{% endfor %}
+</section>
+{% endblock %}
